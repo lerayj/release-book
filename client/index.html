@@ -70,12 +70,6 @@
 		</div>
 	</div>
 
-	<script src="js/jquery.js"></script>
-	<script src="js/foundation.js"></script>
-	<script src="js/modernizr.custom.js"></script>
-	<script src="js/underscore.js"></script>
-
-
 	<script id="release_tpl" type="text/template">
 		<li>
 			<time class="cbp_tmtime" datetime="">
@@ -89,78 +83,19 @@
 				</p>
 				<h3>Key features</h3>
 				<%= key_features %>
-					<h3>Key benefits</h3>
-					<%= key_benefits %>
-						<h3>Known limitations</h3>
-						<%= known_limitations %>
+				<h3>Key benefits</h3>
+				<%= key_benefits %>
+				<h3>Known limitations</h3>
+				<%= known_limitations %>
 			</div>
 		</li>
 	</script>
 
-	<script>
-		var tpl = $('#release_tpl').html();
-		var compiled_tpl = _.template(tpl);
-
-		var releases = [];
-
-		var fakeRelease = {
-			"id": 192,
-			"date": "2016-08-22T13:13:14",
-			"date_gmt": "2016-08-22T12:13:14",
-			"type": "release_note",
-			"title": {
-				"rendered": "1 release"
-			},
-			"content": {
-				"rendered": "<p>VePlatform for small customers.</p>\n"
-			},
-			"release_type": [
-				"product_launch"
-			],
-			"audience": [],
-			"release_impact": [
-				"high"
-			],
-			"release_date": "2016-09-30",
-			"key_features": "<ul>\r\n \t<li>merchant can auto provision an account</li>\r\n \t<li>merchant has instructions on how to install and configure his website</li>\r\n \t<li>merchant can launch a panel campaign</li>\r\n</ul>",
-			"key_benefits": "<ul>\r\n \t<li>no AM involved</li>\r\n \t<li>saas business model</li>\r\n</ul>",
-			"known_limitations": "<ul>\r\n \t<li>retail only</li>\r\n \t<li>US only at launch time</li>\r\n</ul>"
-		};
-
-		var fakeRelease2 = {
-			"id": 192,
-			"type": "bug",
-			"link": "http://0.0.0.0:8000/release-note/self-service-platform-now-launched/",
-			"title": {
-				"rendered": "2 release"
-			},
-			"content": {
-				"rendered": "<p>VePlatfLOLmers.</p>\n"
-			},
-			"release_type": [
-				"product_launch"
-			],
-			"audience": [],
-			"release_impact": [
-				"high"
-			],
-			"release_date": "2016-10-26",
-			"key_features": "<ul>\r\n \t<li>COUCOU</li>\r\n</ul>",
-			"key_benefits": "<ul>\r\n \t<li>KIKI</li>\r\n</ul>",
-			"known_limitations": "<ul>\r\n \t<li>retail only</li>\r\n \t<li>US only at launch time</li>\r\n</ul>",
-		};
-
-		releases.push(fakeRelease);
-		releases.push(fakeRelease2);
-
-		_.each(releases, function(release){
-			var generatedHTML = compiled_tpl(release);
-			$("#release_timeline").append(generatedHTML);
-		});
-
-		$(document).foundation();
-
-	</script>
+	<script src="js/externe/jquery.js"></script>
+	<script src="js/externe/foundation.js"></script>
+	<script src="js/externe/modernizr.custom.js"></script>
+	<script src="js/externe/underscore.js"></script>
+	<script src="js/release_book.js"></script>
 
 </body>
 
