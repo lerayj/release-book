@@ -14,4 +14,23 @@ $.ajax({
   }
 });
 
+$("#search_button").click(function() {
+  var keywords = $("#searchinput").val();
+  $.ajax({
+    method: "GET",
+    url: "/api/releases?search=" + keywords,
+    success: function(releases) {
+      console.log(releases);
+      $("#release_timeline").html("");
+      _.each(releases, function(release) {
+        var generatedHTML = compiled_tpl(release);
+        $("#release_timeline").append(generatedHTML);
+      });
+    },
+    error: function(error) {
+      console.log(error + "c'edst la merde noire");
+    }
+  });
+});
+
 $(document).foundation();
