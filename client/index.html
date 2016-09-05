@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Blueprint: Vertical Timeline</title>
+	<meta name="description" content="Blueprint: Vertical Timeline" />
+	<meta name="keywords" content="timeline, vertical, layout, style, component, web development, template, responsive" />
+	<meta name="author" content="Codrops" />
+	<link rel="shortcut icon" href="../favicon.ico">
+
+	<link rel="stylesheet" type="text/css" href="css/default.css" />
+	<link rel="stylesheet" type="text/css" href="css/component.css" />
+	<link rel="stylesheet" type="text/css" href="css/foundation.css" />
+
+</head>
+
+<body>
+
+	<header data-sticky-container>
+		<div class="top-bar" data-sticky data-options="marginTop:0;" style="width:100%">
+			<div class="top-bar-title">
+				<span data-responsive-toggle="responsive-menu" data-hide-for="medium">
+					<button class="menu-icon dark" type="button" data-toggle></button>
+				</span>
+				<strong>Site Title</strong>
+			</div>
+			<div id="responsive-menu">
+				<div class="top-bar-left">
+					<ul class="dropdown menu" data-dropdown-menu>
+						<li>
+							<a href="#">Produits</a>
+							<ul class="menu vertical">
+								<li><a href="#">VePanel</a></li>
+								<li><a href="#">ERP</a></li>
+								<li><a href="#">DMP</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="#">Type</a>
+							<ul class="menu vertical">
+								<li><a href="#">Major version</a></li>
+								<li><a href="#">Minor version</a></li>
+								<li><a href="#">Bug fix</a></li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+				<div class="top-bar-right">
+					<ul class="menu">
+						<li>
+							<input type="search" placeholder="Search">
+						</li>
+						<li>
+							<button type="button" class="button">Search</button>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<div class="container">
+		<div class="main">
+			<ul class="cbp_tmtimeline" id="release_timeline">
+
+			</ul>
+		</div>
+	</div>
+
+	<script src="js/jquery.js"></script>
+	<script src="js/foundation.js"></script>
+	<script src="js/modernizr.custom.js"></script>
+	<script src="js/underscore.js"></script>
+
+
+	<script id="release_tpl" type="text/template">
+		<li>
+			<time class="cbp_tmtime" datetime="">
+				<span><%= release_date %></span>
+			</time>
+			<div class="cbp_tmicon cbp_tmicon-phone"></div>
+			<div class="cbp_tmlabel">
+				<h2><%= title.rendered %></h2>
+				<p>
+					<%= content.rendered %>
+				</p>
+				<h3>Key features</h3>
+				<%= key_features %>
+					<h3>Key benefits</h3>
+					<%= key_benefits %>
+						<h3>Known limitations</h3>
+						<%= known_limitations %>
+			</div>
+		</li>
+	</script>
+
+	<script>
+		var tpl = $('#release_tpl').html();
+		var compiled_tpl = _.template(tpl);
+
+		var releases = [];
+
+		var fakeRelease = {
+			"id": 192,
+			"date": "2016-08-22T13:13:14",
+			"date_gmt": "2016-08-22T12:13:14",
+			"type": "release_note",
+			"title": {
+				"rendered": "1 release"
+			},
+			"content": {
+				"rendered": "<p>VePlatform for small customers.</p>\n"
+			},
+			"release_type": [
+				"product_launch"
+			],
+			"audience": [],
+			"release_impact": [
+				"high"
+			],
+			"release_date": "2016-09-30",
+			"key_features": "<ul>\r\n \t<li>merchant can auto provision an account</li>\r\n \t<li>merchant has instructions on how to install and configure his website</li>\r\n \t<li>merchant can launch a panel campaign</li>\r\n</ul>",
+			"key_benefits": "<ul>\r\n \t<li>no AM involved</li>\r\n \t<li>saas business model</li>\r\n</ul>",
+			"known_limitations": "<ul>\r\n \t<li>retail only</li>\r\n \t<li>US only at launch time</li>\r\n</ul>"
+		};
+
+		var fakeRelease2 = {
+			"id": 192,
+			"type": "bug",
+			"link": "http://0.0.0.0:8000/release-note/self-service-platform-now-launched/",
+			"title": {
+				"rendered": "2 release"
+			},
+			"content": {
+				"rendered": "<p>VePlatfLOLmers.</p>\n"
+			},
+			"release_type": [
+				"product_launch"
+			],
+			"audience": [],
+			"release_impact": [
+				"high"
+			],
+			"release_date": "2016-10-26",
+			"key_features": "<ul>\r\n \t<li>COUCOU</li>\r\n</ul>",
+			"key_benefits": "<ul>\r\n \t<li>KIKI</li>\r\n</ul>",
+			"known_limitations": "<ul>\r\n \t<li>retail only</li>\r\n \t<li>US only at launch time</li>\r\n</ul>",
+		};
+
+		releases.push(fakeRelease);
+		releases.push(fakeRelease2);
+
+		_.each(releases, function(release){
+			var generatedHTML = compiled_tpl(release);
+			$("#release_timeline").append(generatedHTML);
+		});
+
+		$(document).foundation();
+
+	</script>
+
+</body>
+
+</html>
