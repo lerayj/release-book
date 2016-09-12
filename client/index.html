@@ -2,19 +2,20 @@
 <html lang="en" class="no-js">
 
 <head>
+	<title>Blueprint: Vertical Timeline</title>
+
 	<meta charset="UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Blueprint: Vertical Timeline</title>
 	<meta name="description" content="Blueprint: Vertical Timeline" />
 	<meta name="keywords" content="timeline, vertical, layout, style, component, web development, template, responsive" />
 	<meta name="author" content="Codrops" />
+
 	<link rel="shortcut icon" href="../favicon.ico">
 
 	<link rel="stylesheet" type="text/css" href="css/default.css" />
 	<link rel="stylesheet" type="text/css" href="css/component.css" />
 	<link rel="stylesheet" type="text/css" href="css/foundation.css" />
-
 </head>
 
 <body>
@@ -63,11 +64,19 @@
 	</header>
 
 	<div class="container">
+
 		<div class="main">
 			<ul class="cbp_tmtimeline" id="release_timeline">
 
 			</ul>
 		</div>
+
+		<div class="navigationBar">
+			<div id="scrollTop">TOP</div>
+			<div class="scrollLast">LAST</div>
+			<div class="scrollNext">NEXT</div>
+		</div>
+
 	</div>
 
 	<script id="release_tpl" type="text/template">
@@ -83,10 +92,10 @@
 				</p>
 				<h3>Key features</h3>
 				<%= key_features %>
-				<h3>Key benefits</h3>
-				<%= key_benefits %>
-				<h3>Known limitations</h3>
-				<%= known_limitations %>
+					<h3>Key benefits</h3>
+					<%= key_benefits %>
+						<h3>Known limitations</h3>
+						<%= known_limitations %>
 			</div>
 		</li>
 	</script>

@@ -14,6 +14,11 @@ $.ajax({
   }
 });
 
+
+
+
+
+//////////// SEARCH
 $("#search_button").click(function() {
   var keywords = $("#searchinput").val();
   $.ajax({
@@ -32,5 +37,24 @@ $("#search_button").click(function() {
     }
   });
 });
+
+
+
+//// Navigation on releases
+$(document).keydown(function(e) {
+  // Down arrow
+  if (e.keyCode == 40) {
+    console.log('DOWN');
+  }
+  // Up arrow
+  if (e.keyCode == 38) {
+    console.log('UP');
+  }
+});
+
+$("#scrollTop").click(function(){
+  $('html, body').animate({scrollTop: '0px'}, 300);
+});
+
 
 $(document).foundation();
