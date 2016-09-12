@@ -191,13 +191,11 @@
 }
 
 
-
 .navigationBar {
 	width:100px;
 	height:130px;
 	padding:10px;
 	text-align:center;
-	background: whiteSmoke;
 	font-weight: bold;
 	position:fixed;
 	top:75px;
