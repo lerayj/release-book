@@ -16,8 +16,6 @@ $.ajax({
 
 
 
-
-
 //////////// SEARCH
 $("#search_button").click(function() {
   var keywords = $("#searchinput").val();
@@ -52,9 +50,14 @@ $(document).keydown(function(e) {
   }
 });
 
-$("#scrollTop").click(function(){
-  $('html, body').animate({scrollTop: '0px'}, 300);
+
+/// Scroll to top
+$("#scrollTop").click(function() {
+  $('html, body').animate({
+    scrollTop: '0px'
+  }, 1000,'swing');
 });
 
 
+// Begin foundation
 $(document).foundation();
