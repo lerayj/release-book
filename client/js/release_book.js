@@ -1,5 +1,20 @@
 var compiled_tpl = _.template($('#release_tpl').html());
 
+var tab = [];
+
+function getPositions(){
+  tab.length = 0 ;// clear the table
+  $('.topMarqueur').each(function(){
+    tab.push($(this).offset().top);
+  });
+}
+
+function scrollTo(index){
+  $('html,body').animate({
+    scrollTop:index
+  },1000,'swing');
+}
+
 $.ajax({
   url: "/api/releases",
   success: function(releases) {
@@ -42,11 +57,11 @@ $("#search_button").click(function() {
 $(document).keydown(function(e) {
   // Down arrow
   if (e.keyCode == 40) {
-    console.log('DOWN');
+    scrollNext();
   }
   // Up arrow
   if (e.keyCode == 38) {
-    console.log('UP');
+    scrollPrevious()
   }
 });
 
@@ -57,6 +72,55 @@ $("#scrollTop").click(function() {
     scrollTop: '0px'
   }, 1000,'swing');
 });
+//scroll to last
+$('.scrollLast.button').click(function(){
+  scrollTo($('time:last').offset().top);
+});
+//Scroll to next
+$('.scrollNext.button').click(scrollNext);
+
+$('.scrollPrevious.button').click(scrollPrevious)
+
+function scrollPrevious(){
+  if ($('body').is(':animated')) return;
+  getPositions();
+  var index = -1;
+  if (window.scrollY>tab[0] && window.scrollY<tab[1]){
+    index = 0;
+  }
+  if (tab[0]<window.scrollY){
+    for (var i = tab.length;i>-1;i--){
+      if (tab[i]<window.scrollY-1){
+        index = i;
+        break;
+      }
+    }
+  }
+    if (index>=0){
+      scrollTo(tab[index]);
+    }
+}
+
+function scrollNext(){
+  if ($('body').is(':animated')) return;
+  getPositions();
+  var index = 0;
+
+  for (var i = 0;i<tab.length;i++){
+    if (tab[i]>window.scrollY+1){
+      index = i;
+      break;
+    }
+    index = tab.length-1;
+  }
+  if (i==0){
+    scrollTo(tab[1]);
+  }
+  if (i>0 && i<tab.length){
+    scrollTo(tab[index]);
+  }
+}
+
 
 
 // Begin foundation
