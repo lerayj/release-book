@@ -10,14 +10,13 @@ $.ajax({
     });
   },
   error: function(error) {
-    console.log(error + "c'edst la merde noire");
+    console.log(error + "c'est la merde noire");
   }
 });
 
-
-
 //////////// SEARCH
-$("#search_button").click(function() {
+$("#search_button").click(function(e) {
+  e.preventDefault();
   var keywords = $("#searchinput").val();
   $.ajax({
     method: "GET",
@@ -31,7 +30,7 @@ $("#search_button").click(function() {
       });
     },
     error: function(error) {
-      console.log(error + "c'edst la merde noire");
+      console.log(error + "c'est la merde noire");
     }
   });
 });
@@ -40,6 +39,7 @@ $("#search_button").click(function() {
 
 //// Navigation on releases
 $(document).keydown(function(e) {
+  e.preventDefault();
   // Down arrow
   if (e.keyCode == 40) {
     console.log('DOWN');
@@ -52,10 +52,11 @@ $(document).keydown(function(e) {
 
 
 /// Scroll to top
-$("#scrollTop").click(function() {
+$("#scrollTop").click(function(e) {
+  e.preventDefault();
   $('html, body').animate({
     scrollTop: '0px'
-  }, 1000,'swing');
+  }, 1000);
 });
 
 
