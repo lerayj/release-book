@@ -5,7 +5,22 @@ const Product = require('../model/Product');
 const Release = require('../model/Release');
 const unirest = require('unirest');
 
-// TODO
+var release_types = ["debug", "minor", "major", "launch"];
+var release_impacts = ["high", "medium", "low"];
+var audiences = ["Sales", "Traders", "AM", "Techs"];
+
+ApiRouter.get('/releases/types', (req, res) => {
+  res.send(release_types);
+});
+
+ApiRouter.get('/releases/impacts', (req, res) => {
+  res.send(release_impacts);
+});
+
+ApiRouter.get('/audiences', (req, res) => {
+  res.send(audiences);
+});
+
 ApiRouter.get('/products', (req, res) => {
   unirest.get('http://10.161.69.37:8000/wp-json/wp/v2/products?per_page=200')
     .headers({
@@ -15,12 +30,38 @@ ApiRouter.get('/products', (req, res) => {
     .end(function(response) {
       res.send(response.body);
     });
-  res.send('Products!!')
 });
 
 ApiRouter.get('/releases', (req, res) => {
-  res.send(generateReleases(100));
+  var fake_filter = _.clone(releases);
+  console.log(fake_filter.length);
+  if (req.query) {
+    if (req.query.search) {
+      fake_filter = _.filter(fake_filter, function(release){
+        return release.title.rendered.indexOf(req.query.search) !== -1;
+      });
+      console.log("After:" + fake_filter.length);
+    }
+    if (req.query.app) {
+      //  _.filter(releases, function(release){
+    }
+    if (req.query.type) {
 
+    }
+    if (req.query.impact) {
+
+    }
+    if (req.query.audience) {
+
+    }
+    if (req.query.startDate) {
+
+    }
+  }
+
+  setTimeout(function() {
+    res.send(fake_filter);
+  }, 1000);
   // var search = req.query.search || "";
   // unirest.get('http://10.161.69.37:8000/wp-json/wp/v2/releases?search=' + search)
   //   .headers({
@@ -45,7 +86,7 @@ var generateRelease = function() {
     "id": faker.lorem.sentence(),
     "type": "release_note",
     "release_type": [
-      "product_launch"
+      _.sample(release_types)
     ],
     "title": {
       "rendered": faker.lorem.sentence()
@@ -53,9 +94,11 @@ var generateRelease = function() {
     "content": {
       "rendered": faker.lorem.paragraphs()
     },
-    "audience": [],
+    "audience": [
+      _.sample(audiences)
+    ],
     "release_impact": [
-      "high"
+      _.sample(release_impacts)
     ],
     "release_date": faker.date.recent(),
     "key_features": "<ul>\r\n \t<li>merchant can auto provision an account</li>\r\n \t<li>merchant has instructions on how to install and configure his website</li>\r\n \t<li>merchant can launch a panel campaign</li>\r\n</ul>",
@@ -64,5 +107,7 @@ var generateRelease = function() {
   }
   return release;
 }
+
+var releases = generateReleases(100);
 
 module.exports = ApiRouter;

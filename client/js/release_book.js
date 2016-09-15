@@ -1,8 +1,8 @@
+////   FUNCTIONS  UTILS
 function defaultErrorCallback(err) {
   console.log('ERROR : ', err)
-}
+};
 
-////   FUNCTIONS  UTILS
 var tab = [];
 
 function getPositions() {
@@ -12,9 +12,11 @@ function getPositions() {
   });
 };
 
-function scrollTo(index) {
+function scrollTo(ytop) {
+  // Make a margin to take the sticky header into account
+  // var realYTop = ytop - $("header").height();
   $('html,body').animate({
-    scrollTop: index
+    scrollTop: ytop
   }, 1000, 'swing');
 };
 
@@ -35,7 +37,7 @@ function scrollPrevious() {
   if (index >= 0) {
     scrollTo(tab[index]);
   }
-}
+};
 
 function scrollNext() {
   if ($('body').is(':animated')) return;
@@ -69,8 +71,17 @@ $('.scrollLast.button').click(function() {
 });
 //Scroll to next
 $('.scrollNext.button').click(scrollNext);
-
-$('.scrollPrevious.button').click(scrollPrevious)
+$('.scrollPrevious.button').click(scrollPrevious);
+$(document).keydown(function(e) {
+  // Down arrow
+  if (e.keyCode == 40) {
+    scrollNext();
+  }
+  // Up arrow
+  if (e.keyCode == 38) {
+    scrollPrevious()
+  }
+});
 
 
 //////// Functions api
@@ -79,10 +90,10 @@ function getReleases(params, success, error) {
   if (params && params.search) {
     url += "search=" + params.search;
   }
-  if(params && params.appfilter){
+  if (params && params.appfilter) {
 
   }
-  if(params && params.typefilter){
+  if (params && params.typefilter) {
 
   }
   $.ajax({
@@ -93,11 +104,17 @@ function getReleases(params, success, error) {
 }
 
 function displayReleases(releases) {
+  $("#release_timeline").fadeOut(100);
+  $("#release_timeline").html("");
   var compiled_tpl = _.template($('#release_tpl').html());
   _.each(releases, function(release) {
+    var formatesDate = new Date(release.release_date).toISOString().substring(0, 10);
+    release.release_date_formatted = formatesDate;
     var generatedHTML = compiled_tpl(release);
     $("#release_timeline").append(generatedHTML);
   });
+  $("#release_timeline").fadeIn(100);
+  $(document).foundation();
   getPositions();
 }
 
@@ -111,24 +128,26 @@ $("#search_button").click(function(e) {
   getReleases(params, displayReleases, defaultErrorCallback);
 });
 
-
-
-//// Navigation on releases
-$(document).keydown(function(e) {
-  e.preventDefault();
-  // Down arrow
-  if (e.keyCode == 40) {
-    scrollNext();
-  }
-  // Up arrow
-  if (e.keyCode == 38) {
-    scrollPrevious()
-  }
-});
-
-
-
+//// Loading management
+var $loading = $('#spinner').hide();
+$(document)
+  .ajaxStart(function() {
+    $loading.show();
+  })
+  .ajaxStop(function() {
+    $loading.hide();
+  });
 
 // Begin main program
 $(document).foundation();
+$('.title-bar').on('sticky.zf.stuckto:top', function(){
+  $(this).addClass('shrink');
+}).on('sticky.zf.unstuckfrom:top', function(){
+  $(this).removeClass('shrink');
+})
+console.log(Foundation.version);
+
+$(window).resize(function() {
+  getPositions();
+});
 getReleases({}, displayReleases, defaultErrorCallback);
