@@ -66,6 +66,15 @@ $('#dp1').on('changeDate',function(){
   getReleases(params,displayReleases,defaultErrorCallback);
 });
 
+//adding impact filter
+$('#type a').click(function(){
+  var params = {
+    filter = this.text()
+  }
+getReleases(params,displayReleases,defaultErrorCallback);
+});
+
+
 /// Scroll to top
 $("#scrollTop").click(function(e) {
   e.preventDefault();
@@ -115,6 +124,9 @@ function getReleases(params, success, error) {
   }
   if (params && params.datefilter) {
     url+="date="+params.datefilter;
+  }
+  if (params && params.filter) {
+    url+="filter="+params.filter;
   }
   $.ajax({
     url: url,
