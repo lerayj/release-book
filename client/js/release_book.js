@@ -58,6 +58,14 @@ function scrollNext() {
   }
 }
 
+//When changing date
+$('#dp1').on('changeDate',function(){
+  var params = {
+    datefilter:$('#dp1').text()
+  }
+  getReleases(params,displayReleases,defaultErrorCallback);
+});
+
 /// Scroll to top
 $("#scrollTop").click(function(e) {
   e.preventDefault();
@@ -83,6 +91,15 @@ $(document).keydown(function(e) {
   }
 });
 
+//datepicker
+$(function(){
+  var date = new Date();
+  $('#dp1').fdatepicker({
+    initialDate: '01-'+date.getMonth()+1+'-'+date.getFullYear(),
+		format: 'dd-mm-yyyy',
+		disableDblClickSelection: true
+  })
+})
 
 //////// Functions api
 function getReleases(params, success, error) {
@@ -95,6 +112,9 @@ function getReleases(params, success, error) {
   }
   if (params && params.typefilter) {
 
+  }
+  if (params && params.datefilter) {
+    url+="date="+params.datefilter;
   }
   $.ajax({
     url: url,
