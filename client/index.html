@@ -23,21 +23,39 @@
 		<div class="top-bar">
 			<div class="top-bar-left">
 				<ul class="dropdown menu" data-dropdown-menu>
-					<li class="menu-text">Ve release book</li>
+					<li class="menu-text">
+						Ve release book
+					</li>
 					<li>
 						<a href="#">Produits</a>
-						<ul class="menu vertical">
-							<li><a href="#">VePanel</a></li>
-							<li><a href="#">ERP</a></li>
-							<li><a href="#">DMP</a></li>
+						<ul class="menu vertical" id="list_products">
+							<li><a href="#"><i class="fa fa-camera-retro"></i>VePanel</a></li>
+							<li><a href="#"><i class="fa fa-camera-retro"></i>ERP</a></li>
+							<li><a href="#"><i class="fa fa-camera-retro"></i>DMP</a></li>
 						</ul>
 					</li>
 					<li>
-						<a href="#">Type</a>
-						<ul class="menu vertical">
-							<li><a href="#">Major version</a></li>
-							<li><a href="#">Minor version</a></li>
-							<li><a href="#">Bug fix</a></li>
+						<a href="#">Types</a>
+						<ul class="menu vertical" id="list_release_types">
+							<li><a href="#"><i class="fa fa-camera-retro"></i>Major version</a></li>
+							<li><a href="#"><i class="fa fa-camera-retro"></i>Minor version</a></li>
+							<li><a href="#"><i class="fa fa-camera-retro"></i>Bug fix</a></li>
+						</ul>
+					</li>
+					<li>
+						<a href="#">Impacts</a>
+						<ul class="menu vertical" id="list_release_impacts">
+							<li><a href="#"><i class="fa fa-camera-retro"></i>Major version</a></li>
+							<li><a href="#"><i class="fa fa-camera-retro"></i>Minor version</a></li>
+							<li><a href="#"><i class="fa fa-camera-retro"></i>Bug fix</a></li>
+						</ul>
+					</li>
+					<li>
+						<a href="#">Audiences</a>
+						<ul class="menu vertical" id="list_audiences">
+							<li><a href="#"><i class="fa fa-camera-retro"></i>Major version</a></li>
+							<li><a href="#"><i class="fa fa-camera-retro"></i>Minor version</a></li>
+							<li><a href="#"><i class="fa fa-camera-retro"></i>Bug fix</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -117,7 +135,7 @@
 				<span><%= release.release_date_formatted %></span>
 			</time>
 			<div class="cbp_tmicon">
-				<i class="fa fa-camera-retro"></i>
+				<i class="fa fa-facebook-official"></i>
 			</div>
 			<div class="timeline_item cbp_tmlabel" id="<%=index%>">
 				<p>

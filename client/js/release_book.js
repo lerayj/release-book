@@ -1,8 +1,28 @@
+var products = [];
+var release_types = [];
+var release_impacts = [];
+var audiences = [];
 
-////   FUNCTIONS  UTILS
+var filters = {
+  product: undefined,
+  type: undefined,
+  impact: undefined,
+  audience: undefined,
+  offset: undefined
+}
+
+//// FUNCTIONS UTILS
 function defaultErrorCallback(err) {
   console.log('ERROR : ', err)
 };
+
+function getProducts(success, error) {};
+
+function getReleaseTypes(success, error) {};
+
+function getReleaseImpacts(success, error) {};
+
+function getAudiences(success, error) {};
 
 //////// Functions api
 function getReleases(params, success, error) {
@@ -16,12 +36,21 @@ function getReleases(params, success, error) {
   if (params && params.type) {
 
   }
+  if (params && params.impact) {
+
+  }
+  if (params && params.audience) {
+
+  }
+  if (params && params.offset) {
+
+  }
   $.ajax({
     url: url,
     success: success,
     error: error
   });
-}
+};
 
 function displayReleases(response) {
   var releases = response.releases;
@@ -36,20 +65,21 @@ function displayReleases(response) {
   var compiled_timeline_tpl = _.template($('#release_timeline_tpl').html());
   var compiled_release_tpl = _.template($('#release_tpl').html());
 
-  var generatedHTML = compiled_timeline_tpl({releases: releases});
+  var generatedHTML = compiled_timeline_tpl({
+    releases: releases
+  });
   $("#release_timeline").html("");
   $("#release_timeline").append(generatedHTML);
 
   var generatedDetails = compiled_release_tpl(releases[0]);
   $("#detail_panel").html(generatedDetails);
 
-  $(".timeline_item").hover(function(event){
+  $(".timeline_item").hover(function(event) {
     var index = event.target.id;
-    var details = compiled_release_tpl(releases[index]);
-    $("#detail_panel").html(details);
+    var detailshtml = compiled_release_tpl(releases[index]);
+    $("#detail_panel").html(detailshtml);
   });
-}
-
+};
 
 //// Loading management
 var $loading = $('#spinner').hide();
@@ -62,5 +92,11 @@ $(document)
   });
 
 // Begin main program
-$(document).foundation();
-getReleases({}, displayReleases, defaultErrorCallback);
+$(document).ready(function() {
+  $(document).foundation();
+  getProducts();
+  getAudiences();
+  getReleaseTypes();
+  getReleaseImpacts();
+  getReleases({}, displayReleases, defaultErrorCallback);
+})
