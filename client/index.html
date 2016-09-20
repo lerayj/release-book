@@ -17,11 +17,10 @@
 	<link rel="stylesheet" type="text/css" href="css/release-book.css" />
 </head>
 
-<body>
+<body class="vbox viewport">
 
-	<!-- <a href="#"><img class="logo" src="images/velogo_secondary.png"/></a> -->
-	<header data-sticky-container>
-		<div class="top-bar" data-sticky data-options="marginTop:0;" style="width:100%" data-top-anchor="1" data-btm-anchor="content:bottom">
+	<header>
+		<div class="top-bar">
 			<div class="top-bar-left">
 				<ul class="dropdown menu" data-dropdown-menu>
 					<li class="menu-text">Ve release book</li>
@@ -44,105 +43,40 @@
 				</ul>
 			</div>
 			<div class="top-bar-right">
-				<ul class="menu">
+				<ul class="dropdown menu" data-dropdown-menu>
 					<li>
-						<input type="search" placeholder="Search">
-					</li>
-					<li>
-						<button type="button" class="button">Search</button>
+						<div id="spinner">
+							<div class="bounce1"></div>
+							<div class="bounce2"></div>
+							<div class="bounce3"></div>
+						</div>
 					</li>
 				</ul>
 			</div>
 		</div>
 	</header>
 
-	<!-- <div class="top-bar" data-sticky-container>
-		<div data-sticky data-options="marginTop:0;" style="width:100%">
-			<div class="top-bar-left">
-				<ul class="dropdown menu" data-dropdown-menu>
-					<li class="menu-text">Site Title</li>
-					<li>
-						<a href="#">One</a>
-						<ul class="menu vertical">
-							<li><a href="#">One</a></li>
-							<li><a href="#">Two</a></li>
-							<li><a href="#">Three</a></li>
-						</ul>
-					</li>
-					<li><a href="#">Two</a></li>
-					<li><a href="#">Three</a></li>
-				</ul>
+	<section class="main vbox space-between">
+		<aside>
+			<ul class="cbp_tmtimeline" id="release_timeline">
+			</ul>
+		</aside>
+		<article>
+			<div class="detail_panel cbp_tmlabel" id="detail_panel">
 			</div>
-			<div class="top-bar-right">
-				<ul class="menu">
-					<li>
-						<input type="search" placeholder="Search">
-					</li>
-					<li>
-						<button type="button" class="button">Search</button>
-					</li>
-				</ul>
+		</article>
+	</section>
+
+	<footer>
+		<div class="row">
+			<div class="columns">
+				<p>Made with ♥ in Paris</p>
 			</div>
 		</div>
-	</div> -->
-
-
-
-	<div class="row column" id='content'>
-		<ul class="cbp_tmtimeline" id="release_timeline">
-		</ul>
-	</div>
-
-	<div class="navigationBar">
-		<div class="button" id="scrollTop">
-			<i class="fa fa-arrow-up fa-lg"></i>
-		</div>
-		<div class="scrollPrevious button">
-			<i class="fa fa-arrow-left fa-lg"></i>
-		</div>
-		<div class="scrollNext button">
-			<i class="fa fa-arrow-right fa-lg"></i>
-		</div>
-	</div>
-
-	<script id="release_tpl" type="text/template">
-		<li class="topMarqueur">
-			<time class="cbp_tmtime" datetime="">
-				<span><%= release_date_formatted %></span>
-			</time>
-			<div class="cbp_tmicon">
-				<i class="fa fa-camera-retro"></i>
-			</div>
-			<div class="cbp_tmlabel">
-				<h2><%= title.rendered %></h2>
-				<ul>
-					<li>Audience:
-						<%= audience[0] %>
-					</li>
-					<li>Type:
-						<%= release_type[0] %>
-					</li>
-					<li>Impact:
-						<%= release_impact[0] %>
-					</li>
-				</ul>
-				<p>
-					<%= content.rendered %>
-				</p>
-
-				<h3>Key features</h3>
-				<%= key_features %>
-
-					<h3>Key benefits</h3>
-					<%= key_benefits %>
-
-						<h3>Known limitations</h3>
-						<%= known_limitations %>
-			</div>
-		</li>
-	</script>
+	</footer>
 
 	<script src="js/externe/jquery.js"></script>
+	<script src="js/externe/moment.js"></script>
 	<script src="js/externe/foundation.js"></script>
 	<script src="js/externe/underscore.js"></script>
 	<script src="js/release_book.js"></script>
@@ -150,3 +84,50 @@
 </body>
 
 </html>
+
+<script id="release_tpl" type="text/template">
+	<h3><%= title.rendered %></h3>
+	<hr/>
+	<ul>
+		<li>Audience:
+			<%= audience[0] %>
+		</li>
+		<li>Type:
+			<%= release_type[0] %>
+		</li>
+		<li>Impact:
+			<%= release_impact[0] %>
+		</li>
+	</ul>
+	<p>
+		<%= content.rendered %>
+	</p>
+	<h3>Key features</h3>
+	<%= key_features %>
+		<h3>Key benefits</h3>
+		<%= key_benefits %>
+			<h3>Known limitations</h3>
+			<%= known_limitations %>
+</script>
+
+<script id="release_timeline_tpl" type="text/template">
+	<% _.each(releases, function(release, index) { %>
+		<li>
+			<time class="cbp_tmtime timeago" datetime="<%= release.release_date %>">
+				<span><%= release.release_date_formatted %></span>
+			</time>
+			<div class="cbp_tmicon">
+				<i class="fa fa-camera-retro"></i>
+			</div>
+			<div class="timeline_item cbp_tmlabel" id="<%=index%>">
+				<p>
+					<%= release.title.rendered %>
+				</p>
+				<ul>
+					<li><i class="fa fa-bug"></i></li>
+					<li><i class="fa fa-camera-retro"></i></li>
+				</ul>
+			</div>
+		</li>
+		<% }); %>
+</script>
