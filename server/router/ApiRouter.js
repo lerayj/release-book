@@ -7,21 +7,21 @@ const unirest = require('unirest');
 
 var sizeBatch = 10;
 var release_types = [{
-  id: "debug",
-  icon: "fa-bug",
-  label: "Debug"
-}, {
-  id: "minor",
-  icon: "fa-angle-up",
-  label: "Minor release"
+  id: "launch",
+  icon: "fa-rocket",
+  label: "Product launch"
 }, {
   id: "major",
   icon: "fa-angle-double-up",
   label: "Major release"
 }, {
-  id: "launch",
-  icon: "fa-rocket",
-  label: "Product launch"
+  id: "minor",
+  icon: "fa-angle-up",
+  label: "Minor release"
+}, {
+  id: "debug",
+  icon: "fa-bug",
+  label: "Debug"
 }];
 
 var release_impacts = [{
@@ -121,7 +121,10 @@ ApiRouter.get('/releases', (req, res) => {
       });
     }
   }
+
+  var numberBeforePagination = fake_filter.length;
   console.log(fake_filter.length);
+
   // Pagination
   if (req.query && req.query.offset) {
     fake_filter = _.first(_.last(fake_filter, req.query.offset), sizeBatch);
@@ -130,7 +133,7 @@ ApiRouter.get('/releases', (req, res) => {
   }
 
   res.send({
-    number: fake_filter.length,
+    number: numberBeforePagination,
     releases: fake_filter
   });
 
@@ -185,7 +188,5 @@ var generateRelease = function() {
 }
 
 var releases = generateReleases(300);
-
-
 
 module.exports = ApiRouter;
