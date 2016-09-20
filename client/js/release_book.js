@@ -1,3 +1,4 @@
+// Déclaration des variables qui vont contenir la data
 var products = [];
 var release_types = [];
 var release_impacts = [];
@@ -26,6 +27,11 @@ function displayProducts() {
         items: products
       });
       $("#list_products").append(generatedHTML);
+      $("#list_products a").click(function(event) {
+        var product_id = event.target.id;
+        filters.product = product_id;
+        getReleases(filters, displayReleases, defaultErrorCallback);
+      })
     },
     error: defaultErrorCallback
   });
@@ -41,6 +47,11 @@ function displayReleaseTypes() {
         items: release_types
       });
       $("#list_release_types").append(generatedHTML);
+      $("#list_release_types a").click(function(event) {
+        var type_id = event.target.id;
+        filters.type = type_id;
+        getReleases(filters, displayReleases, defaultErrorCallback);
+      })
     },
     error: defaultErrorCallback
   });
@@ -56,6 +67,11 @@ function displayReleaseImpacts(callback) {
         items: release_impacts
       });
       $("#list_release_impacts").append(generatedHTML);
+      $("#list_release_impacts a").click(function(event) {
+        var impact_id = event.target.id;
+        filters.impact = impact_id;
+        getReleases(filters, displayReleases, defaultErrorCallback);
+      })
       if (callback) {
         callback();
       }
@@ -74,61 +90,85 @@ function displayAudiences() {
         items: audiences
       });
       $("#list_audiences").append(generatedHTML);
+      $("#list_audiences a").click(function(event) {
+        var audience_id = event.target.id;
+        filters.audience = audience_id;
+        getReleases(filters, displayReleases, defaultErrorCallback);
+      })
     },
     error: defaultErrorCallback
   });
 };
 
+function initResetFilters() {
+  $('#remove_filter').click(function(event) {
+    event.preventDefault();
+    filters = {
+      product: undefined,
+      type: undefined,
+      impact: undefined,
+      audience: undefined,
+      offset: undefined
+    };
+    getReleases(filters, displayReleases, defaultErrorCallback);
+  });
+}
 //////// Functions api
 function getReleases(params, success, error) {
   var url = "/api/releases?";
-  if (params && params.search) {
-    url += "search=" + params.search;
-  }
-  if (params && params.product) {
 
+  var args = [];
+  if (params && params.product) {
+    args.push("product=" + params.product);
   }
   if (params && params.type) {
-
+    args.push("type=" + params.type);
   }
   if (params && params.impact) {
-
+    args.push("impact=" + params.impact);
   }
   if (params && params.audience) {
-
+    args.push("audience=" + params.audience);
   }
   if (params && params.offset) {
-
+    args.push("offset=" + params.offset);
   }
+
+  var query = args.join("&");
+  console.log("query:", query);
+  url = url + query;
+
   $.ajax({
     url: url,
-    success: success,
+    success: function(response) {
+      // Réordonnancement
+      var releases = response.releases;
+      releases = _.sortBy(releases, function(release) {
+        return -new Date(release.release_date);
+      });
+      // Binding des icones...
+      _.each(releases, function(release) {
+        release.release_date_formatted = new moment(release.release_date).fromNow();
+        release.product = _.find(products, function(product) {
+          return product.id === release.product;
+        })
+        release.release_type = _.find(release_types, function(type) {
+          return type.id === release.release_type[0];
+        })
+        release.audience = _.find(audiences, function(audience) {
+          return audience.id === release.audience[0];
+        })
+        release.release_impact = _.find(release_impacts, function(impact) {
+          return impact.id === release.release_impact[0];
+        })
+      });
+      success(releases);
+    },
     error: error
   });
 };
 
-function displayReleases(response) {
-  var releases = response.releases;
-  releases = _.sortBy(releases, function(release) {
-    return -new Date(release.release_date);
-  });
-
-  _.each(releases, function(release) {
-    release.release_date_formatted = new moment(release.release_date).fromNow();
-    release.product = _.find(products, function(product) {
-      return product.id === release.product;
-    })
-    release.release_type = _.find(release_types, function(type) {
-      return type.id === release.release_type[0];
-    })
-    release.audience = _.find(audiences, function(audience) {
-      return audience.id === release.audience[0];
-    })
-    release.release_impact = _.find(release_impacts, function(impact) {
-      return impact.id === release.release_impact[0];
-    })
-  });
-
+function displayReleases(releases) {
   var compiled_timeline_tpl = _.template($('#release_timeline_tpl').html());
   var compiled_release_tpl = _.template($('#release_tpl').html());
 
@@ -141,9 +181,13 @@ function displayReleases(response) {
   var generatedDetails = compiled_release_tpl(releases[0]);
   $("#detail_panel").html(generatedDetails);
 
+  // Changement du paneau de droite sur le hover d'un item de la timeline
   $(".timeline_item").hover(function(event) {
     var index = event.target.id;
     var detailshtml = compiled_release_tpl(releases[index]);
+    $("article").animate({
+      scrollTop: 0
+    }, "fast");
     $("#detail_panel").html(detailshtml);
   });
 };
@@ -161,6 +205,7 @@ $(document)
 // Begin main program
 $(document).ready(function() {
   $(document).foundation();
+  initResetFilters();
   displayProducts();
   displayAudiences();
   displayReleaseTypes();

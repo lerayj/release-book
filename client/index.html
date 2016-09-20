@@ -46,6 +46,9 @@
 						<ul class="menu vertical" id="list_audiences">
 						</ul>
 					</li>
+					<li>
+						<a id="remove_filter" href="#"><i class="fa fa-times"></i></a>
+					</li>
 				</ul>
 			</div>
 			<div class="top-bar-right">
@@ -135,6 +138,6 @@
 
 <script id="menu_item_tpl" type="text/template">
 	<% _.each(items, function(item) { %>
-		<li><a href="#"><i class="fa <%= item.icon %>"></i><%= item.label %></a></li>
+		<li><a id="<%= item.id %>"href="#"><i class="fa <%= item.icon %>"></i><%= item.label %></a></li>
 		<% }); %>
 </script>
