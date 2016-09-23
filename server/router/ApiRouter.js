@@ -131,7 +131,6 @@ ApiRouter.get('/releases', (req, res) => {
   } else {
     fake_filter = _.first(fake_filter, sizeBatch);
   }
-
   res.send({
     number: numberBeforePagination,
     releases: fake_filter

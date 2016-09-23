@@ -143,6 +143,7 @@ function getReleases(params, success, error) {
     success: function(response) {
       // Réordonnancement
       var releases = response.releases;
+      console.log(releases);
       releases = _.sortBy(releases, function(release) {
         return -new Date(release.release_date);
       });
@@ -177,7 +178,6 @@ function displayReleases(releases) {
   });
   $("#release_timeline").html("");
   $("#release_timeline").append(generatedHTML);
-
   var generatedDetails = compiled_release_tpl(releases[0]);
   $("#detail_panel").html(generatedDetails);
 
@@ -192,6 +192,31 @@ function displayReleases(releases) {
   });
 };
 
+function displayMore(releases){
+  var compiled_timeline_tpl = _.template($('#release_timeline_tpl').html());
+  var compiled_release_tpl = _.template($('#release_tpl').html());
+        var generatedHTML = compiled_timeline_tpl({
+          releases: releases
+        });
+        $("#release_timeline").append(generatedHTML);
+        var generatedDetails = compiled_release_tpl(releases[0]);
+        $("#detail_panel").html(generatedDetails);
+
+        // Changement du paneau de droite sur le hover d'un item de la timeline
+        $(".timeline_item").hover(function(event) {
+          var index = event.target.id;
+          var detailshtml = compiled_release_tpl(releases[index]);
+          $("article").animate({
+            scrollTop: 0
+          }, "fast");
+    });
+}
+$('aside').scroll(function(){
+  if($('aside').scrollTop() + $('aside').height() == ($('aside').children().outerHeight(true)+15)){
+    filters.offset =$('.timeago').length;
+    getReleases(filters, displayMore, defaultErrorCallback);
+  }
+},1000);
 //// Loading management
 var $loading = $('#spinner').hide();
 $(document)
