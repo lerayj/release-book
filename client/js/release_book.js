@@ -195,40 +195,45 @@ function displayReleases(releases) {
 function displayMore(releases){
   var compiled_timeline_tpl = _.template($('#release_timeline_tpl').html());
   var compiled_release_tpl = _.template($('#release_tpl').html());
-        var generatedHTML = compiled_timeline_tpl({
-          releases: releases
-        });
-        $("#release_timeline").append(generatedHTML);
-        var generatedDetails = compiled_release_tpl(releases[0]);
-        $("#detail_panel").html(generatedDetails);
+  var generatedHTML = compiled_timeline_tpl({
+    releases: releases
+  });
+  $("#release_timeline").append(generatedHTML);
+  var generatedDetails = compiled_release_tpl(releases[0]);
+  $("#detail_panel").html(generatedDetails);
 
-        // Changement du paneau de droite sur le hover d'un item de la timeline
-        $(".timeline_item").hover(function(event) {
-          var index = event.target.id;
-          var detailshtml = compiled_release_tpl(releases[index]);
-          $("article").animate({
-            scrollTop: 0
-          }, "fast");
-    });
+  // Changement du paneau de droite sur le hover d'un item de la timeline
+  $(".timeline_item").hover(function(event) {
+    var index = event.target.id;
+    var detailshtml = compiled_release_tpl(releases[index]);
+    $("article").animate({
+      scrollTop: 0
+    }, "fast");
+    $("#detail_panel").html(detailshtml);
+  });
+  $('.loader').css('display','none');//on stoppe le loader
 }
 $('aside').scroll(function(){
-  if($('aside').scrollTop() + $('aside').height() == ($('aside').children().outerHeight(true)+15)){
-    filters.offset =$('.timeago').length;
-    getReleases(filters, displayMore, defaultErrorCallback);
-  }
-},1000);
+  if($('aside').scrollTop() + $('aside').height() == ($('aside').children().outerHeight(true)+15)){//the magic number origin is : Release-book.css ".cbp_tmtimeline > li .cbp_tmlabel"
+  filters.offset =$('.timeago').length;
+  $('.loader').css('display','block');//on affiche le loader
+  getReleases(filters, displayMore, defaultErrorCallback);
+}
+});
 //// Loading management
 var $loading = $('#spinner').hide();
 $(document)
-  .ajaxStart(function() {
-    $loading.show();
-  })
-  .ajaxStop(function() {
-    $loading.hide();
-  });
+.ajaxStart(function() {
+  $loading.show();
+})
+.ajaxStop(function() {
+  $loading.hide();
+});
+
 
 // Begin main program
 $(document).ready(function() {
+  $('.loader').css('display','none');
   $(document).foundation();
   initResetFilters();
   displayProducts();
