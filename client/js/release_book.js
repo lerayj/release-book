@@ -115,6 +115,7 @@ function initResetFilters() {
 }
 //////// Functions api
 function getReleases(params, success, error) {
+
   var url = "/api/releases?";
 
   var args = [];
@@ -190,6 +191,7 @@ function displayReleases(releases) {
     }, "fast");
     $("#detail_panel").html(detailshtml);
   });
+  $('.loader').css('display','none');//on stoppe le loader
 };
 
 function displayMore(releases){
@@ -221,7 +223,7 @@ $('aside').scroll(function(){
 }
 });
 //// Loading management
-var $loading = $('#spinner').hide();
+var $loading = $('#spinner');
 $(document)
 .ajaxStart(function() {
   $loading.show();

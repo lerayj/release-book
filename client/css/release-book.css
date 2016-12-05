@@ -125,7 +125,9 @@ aside {
     border-radius: 50%;
     width: 120px;
     height: 120px;
+    top:50%;
     animation: spin 2s linear infinite;
+    vertical-align: center;
     margin-left:50%;
     z-index: 99;
     position:absolute;
